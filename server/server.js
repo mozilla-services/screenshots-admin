@@ -19,6 +19,56 @@ app.use(function(error, req, res, next) {
   res.status(500).type("text").send(`General error: ${error}\n${error.stack}`);
 });
 
+app.get("/lookup-shot", (req, res) => {
+  let term = req.query.term;
+  res.send({
+    shotId: "a-shot-id",
+    deviceId: "a-device-id",
+    title: "A shot title",
+    created: String(new Date()),
+    json: {sampleJson: "something"},
+  });
+});
+
+app.get("/lookup-device", (req, res) => {
+  let deviceId = req.query.deviceId;
+  if (!deviceId) {
+    res.status(404).send("Not found");
+    return;
+  }
+  res.send({
+    deviceId,
+    created: String(new Date()),
+    shotCount: 5,
+    shots: [
+      {
+        id: "a-shot-id",
+        title: "A shot title",
+        created: String(new Date()),
+      }
+    ]
+  });
+});
+
+app.post("/block-device", (req, res) => {
+  let deviceId = req.body.deviceId;
+  if (!deviceId) {
+    res.status(404).send("Not found");
+    return;
+  }
+  res.send("OK");
+});
+
+app.post("/block-shot", (req, res) => {
+  let term = req.body.term;
+  let reason = req.body.reason; // Could be dmca, usererror, illegal, illegal-quaratine
+  if (!term) {
+    res.status(404).send("Not found");
+    return;
+  }
+  res.send("a-shot-id");
+});
+
 /* General 404 handler: */
 app.use(function(req, res, next) {
   res.status(404).send("Not found");
