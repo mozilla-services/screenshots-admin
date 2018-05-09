@@ -91,11 +91,17 @@ class ShotInformation extends React.Component {
       <tbody>
         <tr>
           <th>shot ID</th>
-          <td>{ this.props.shot.shotId }</td>
+          <td>
+            { this.props.shot.shotId }
+            <button onClick={this.onBlockShot.bind(this)}>block</button>
+          </td>
         </tr>
         <tr>
           <th>deviceId</th>
-          <td>{ this.props.shot.deviceId }</td>
+          <td>
+            { this.props.shot.deviceId }
+            <button onClick={this.onLookupDevice.bind(this)}>lookup</button>
+          </td>
         </tr>
         <tr>
           <th>title</th>
@@ -113,6 +119,14 @@ class ShotInformation extends React.Component {
         </tr>
       </tbody>
     </table>;
+  }
+
+  onBlockShot() {
+    // FIXME: implement
+  }
+
+  onLookupDevice() {
+    // FIXME: implement
   }
 }
 
@@ -188,7 +202,10 @@ class DeviceInformation extends React.Component {
       <tbody>
         <tr>
           <th>deviceId</th>
-          <td>{ this.props.device.deviceId }</td>
+          <td>
+            { this.props.device.deviceId }
+            <button onClick={this.onBlockDevice.bind(this)}>block</button>
+          </td>
         </tr>
         <tr>
           <th>creation date</th>
@@ -204,11 +221,15 @@ class DeviceInformation extends React.Component {
   }
 
   onClickLookUp(shot, event) {
-
+    // FIXME: implement
   }
 
   onClickBlock(shot, event) {
+    // FIXME: implement
+  }
 
+  onBlockDevice() {
+    // FIXME: implement
   }
 }
 
