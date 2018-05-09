@@ -22,7 +22,7 @@
     "nodemon": "1.17.3",
     "eslint": "4.19.1",
     "eslint-plugin-mozilla": "0.6.0",
-    "eslint-plugin-no-unsanitized": "2.0.2",
+    "eslint-plugin-no-unsanitized": "3.0.0",
     "npm-run-all": "4.1.2"
   },
   "homepage": "https://github.com/mozilla-services/screenshots-admin",
