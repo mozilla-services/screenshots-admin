@@ -7,23 +7,23 @@
     "url": "https://github.com/mozilla-services/screenshots-admin"
   },
   "dependencies": {
-    "convict": "^4.2.0",
-    "envc": "^2.5.0",
-    "express": "^4.16.3",
-    "mozlog": "^2.2.0",
-    "pg": "^7.4.1",
-    "react": "^16.3.1",
-    "react-dom": "^16.3.1"
+    "convict": "4.2.0",
+    "envc": "2.5.0",
+    "express": "4.16.3",
+    "mozlog": "2.2.0",
+    "pg": "7.4.1",
+    "react": "16.3.2",
+    "react-dom": "16.3.2"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "nodemon": "^1.17.3",
-    "eslint": "^4.16.0",
-    "eslint-plugin-mozilla": "^0.6.0",
-    "eslint-plugin-no-unsanitized": "^2.0.2",
-    "npm-run-all": "^4.1.2"
+    "babel-cli": "6.26.0",
+    "babel-preset-env": "1.6.1",
+    "babel-preset-react": "6.24.1",
+    "nodemon": "1.17.3",
+    "eslint": "4.19.1",
+    "eslint-plugin-mozilla": "0.6.0",
+    "eslint-plugin-no-unsanitized": "2.0.2",
+    "npm-run-all": "4.1.2"
   },
   "homepage": "https://github.com/mozilla-services/screenshots-admin",
   "license": "MPL-2.0",
