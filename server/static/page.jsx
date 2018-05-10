@@ -186,7 +186,6 @@ class LookUpDevice extends React.Component {
 class DeviceInformation extends React.Component {
   render() {
     let rows = [];
-    console.log("my props", this.props);
     for (let shot of this.props.device.shots) {
       rows.push(<tr key={ shot.id }>
         <td>{ shot.id }</td>
