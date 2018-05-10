@@ -38,16 +38,18 @@ class LookUpShot extends React.Component {
       <legend>Look up shot</legend>
 
       <div>
-        <form onSubmit={this.onSubmit.bind(this)}>
+        <form onSubmit={this.onSubmit.bind(this)} id="lookup-shot-form">
           Look up shot:
           <input
           placeholder="shot ID, shot URL, or image URL"
           defaultValue={this.props.searchTerm}
           ref={input => this.input = input}
+          id="lookup-shot-input"
           type="text" />
           <button type="submit">Look up</button>
         </form>
       </div>
+      <hr />
       { this.props.notFound ? <div>No shot found with term {this.props.searchTerm}</div> : null }
       { this.props.shotInformation ? <ShotInformation shot={this.props.shotInformation} /> : null }
       { this.props.shotSearching ? "Searching..." : null }
@@ -108,12 +110,36 @@ class ShotInformation extends React.Component {
           <td>{ this.props.shot.title }</td>
         </tr>
         <tr>
+          <th>URL</th>
+          <td>{ this.props.shot.url }</td>
+        </tr>
+        <tr>
           <th>creation date</th>
           <td>{ this.props.shot.created }</td>
         </tr>
         <tr>
+          <th>expiration time</th>
+          <td>{ this.props.shot.expire_time}</td>
+        </tr>
+        { this.props.shot.block_type !== "none" ?
+          <tr>
+            <th>block type</th>
+            <td>{ this.props.shot.block_type }</td>
+          </tr>
+          : null
+        }
+        { this.props.shot.deleted ?
+          <tr>
+            <th>deleted</th>
+            <td>true</td>
+          </tr>
+          : null
+        }
+        <tr>
+          <th colspan="2">shot JSON</th>
+        </tr>
+        <tr>
           <td colspan="2">
-            <div>Shot JSON:</div>
             <pre>{ JSON.stringify(this.props.shot.json, null, "  ") }</pre>
           </td>
         </tr>
@@ -122,11 +148,18 @@ class ShotInformation extends React.Component {
   }
 
   onBlockShot() {
-    // FIXME: implement
+    let input = document.querySelector("#block-shot-input");
+    input.value = this.props.shot.shotId;
+    input.focus();
   }
 
   onLookupDevice() {
-    // FIXME: implement
+    document.querySelector("#lookup-device-input").value = this.props.shot.deviceId;
+    let form = document.querySelector("#lookup-device-form");
+    form.querySelector("button").click();
+    setTimeout(() => {
+      form.scrollIntoView();
+    }, 100);
   }
 }
 
@@ -136,16 +169,18 @@ class LookUpDevice extends React.Component {
       <legend>Look up device</legend>
 
       <div>
-        <form onSubmit={this.onSubmit.bind(this)}>
+        <form onSubmit={this.onSubmit.bind(this)} id="lookup-device-form">
           Look up device:
           <input
           placeholder="deviceId"
           defaultValue={this.props.searchTerm}
           ref={input => this.input = input}
+          id="lookup-device-input"
           type="text" />
           <button type="submit">Look up</button>
         </form>
       </div>
+      <hr />
       { this.props.notFound ? <div>No device found with ID {this.props.searchTerm}</div> : null }
       { this.props.deviceInformation ? <DeviceInformation device={this.props.deviceInformation} /> : null }
       { this.props.deviceSearching ? "Searching..." : null }
@@ -190,8 +225,9 @@ class DeviceInformation extends React.Component {
       rows.push(<tr key={ shot.id }>
         <td>{ shot.id }</td>
         <td>
-          <span>{ shot.title }</span>
+          <span title={ shot.url }>{ shot.title }</span>
           <span>{ shot.created }</span>
+          { shot.block_type != "none" ? <strong>{ " " + shot.block_type }</strong> : null }
           <button onClick={this.onClickLookUp.bind(this, shot)}>lookup</button>
           <button onCLick={this.onClickBlock.bind(this, shot)}>block</button>
         </td>
@@ -206,9 +242,28 @@ class DeviceInformation extends React.Component {
             <button onClick={this.onBlockDevice.bind(this)}>block</button>
           </td>
         </tr>
+        { this.props.device.accountId ?
+          <tr>
+            <th>FxA account ID</th>
+            <td>{ this.props.device.accountId }</td>
+          </tr>
+          : null
+        }
         <tr>
           <th>creation date</th>
           <td>{ this.props.device.created }</td>
+        </tr>
+        <tr>
+          <th>last login</th>
+          <td>{ this.props.device.last_login }</td>
+        </tr>
+        <tr>
+          <th>addon version</th>
+          <td>{ this.props.device.addon_version }</td>
+        </tr>
+        <tr>
+          <th>session count</th>
+          <td>{ this.props.device.session_count }</td>
         </tr>
         <tr>
           <th>number of shots</th>
@@ -220,15 +275,24 @@ class DeviceInformation extends React.Component {
   }
 
   onClickLookUp(shot, event) {
-    // FIXME: implement
+    document.querySelector("#lookup-shot-input").value = shot.id;
+    let form = document.querySelector("#lookup-shot-form");
+    form.querySelector("button").click();
+    setTimeout(() => {
+      form.scrollIntoView();
+    }, 100);
   }
 
   onClickBlock(shot, event) {
-    // FIXME: implement
+    let input = document.querySelector("#block-shot-input");
+    input.value = shot.id;
+    input.focus();
   }
 
   onBlockDevice() {
-    // FIXME: implement
+    let input = document.querySelector("#block-device-input");
+    input.value = this.props.device.deviceId;
+    input.focus();
   }
 }
 
@@ -241,9 +305,11 @@ class BlockDevice extends React.Component {
         <input
         placeholder="deviceId"
         ref={input => this.input = input}
+        id="block-device-input"
         type="text" />
         <button type="submit">Block</button>
       </form>
+      <hr />
       { this.props.blockDeviceInformation ? this.props.blockDeviceInformation : null }
     </fieldset>;
   }
@@ -278,16 +344,18 @@ class BlockDevice extends React.Component {
 class BlockShot extends React.Component {
   render() {
     return <fieldset>
-      <legend>block device</legend>
+      <legend>block shot</legend>
       <form onSubmit={this.onSubmit.bind(this)}>
-        Block deviceId:
+        Block shot:
         <input
         placeholder="shot ID, shot or image URL"
         ref={input => this.input = input}
+        id="block-shot-input"
         type="text" />
         <select
         ref={select => this.select = select} required>
           <option value="">Select block reason</option>
+          <option value="none">Clear block</option>
           <option value="dmca">DMCA</option>
           <option value="usererror">User error</option>
           <option value="illegal">Illegal</option>
@@ -295,6 +363,7 @@ class BlockShot extends React.Component {
         </select>
         <button type="submit">Block</button>
       </form>
+      <hr />
       { this.props.blockShotInformation ? this.props.blockShotInformation : null }
     </fieldset>;
   }
