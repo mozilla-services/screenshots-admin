@@ -7,6 +7,7 @@ const user = encodeURIComponent(config.db.user);
 const dbname = encodeURIComponent(config.db.dbname || config.db.user);
 const credentials = config.db.password ? `${user}:${encodeURIComponent(config.db.password)}` : user;
 const constr = `postgres://${credentials}@${config.db.host}/${dbname}`;
+mozlog.info("connecting", "Connection to PG:", constr);
 
 const pool = new pg.Pool(Object.assign({connectionString: constr}, config.db.pool));
 

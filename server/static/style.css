@@ -1,3 +1,15 @@
 html, body {
   font-family: sans-serif;
+  background-color: #ddd;
+}
+
+fieldset {
+  margin-top: 1em;
+  margin-bottom: 2em;
+  background-color: #fff;
+}
+
+legend {
+  font-weight: bold;
+  margin-top: -8px;
 }
