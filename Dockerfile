@@ -16,16 +16,12 @@ RUN npm install
 FROM dependencies AS build
 WORKDIR /app
 COPY server /app/server
-COPY bin/_run-docker /app/bin/_run-docker
 RUN npm run build
 
 # Release with Alpine
 FROM node:alpine AS release
-# slightly annoying: no bash by default...
-RUN apk add --update bash && rm -rf /var/cache/apk/*
 WORKDIR /app
 COPY --from=dependencies /app/package.json ./
 RUN npm install --only=production
 COPY --from=build /app ./
-RUN cd /app  
-CMD /app/bin/_run-docker
+CMD ["npm", "start"]
