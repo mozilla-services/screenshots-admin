@@ -24,4 +24,5 @@ WORKDIR /app
 COPY --from=dependencies /app/package.json ./
 RUN npm install --only=production
 COPY --from=build /app ./
+COPY ./version.json /app/version.json
 CMD ["npm", "start"]
