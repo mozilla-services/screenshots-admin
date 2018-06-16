@@ -187,7 +187,6 @@ app.get("/__lbheartbeat__", function(req, res) {
 
 // Monitoring endpoint. Verifies this app is up and can connect to the database.
 app.get("/__heartbeat__", async function(req, res) {
-  // TODO: worth it to return the DB patch level?
   try {
     await db.select(`SELECT value FROM property WHERE key = 'patch'`);
     res.sendStatus(200);
