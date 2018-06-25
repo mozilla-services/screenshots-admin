@@ -2,7 +2,7 @@ version: 2
 jobs:
   build_and_push:
     docker:
-      - image: docker:stable
+      - image: docker:stable@sha256:2a157fe8d1644e0a1863b43ec8772805222619b38c360528f1e2154d44421a79
     steps:
       - run:
           name: Install checkout deps
