@@ -13,3 +13,11 @@ legend {
   font-weight: bold;
   margin-top: -8px;
 }
+
+.topDomains td:first-child {
+  padding-right: 1em;
+}
+
+.topDomains td {
+  border-bottom: 1px solid #ddd;
+}

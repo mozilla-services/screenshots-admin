@@ -12,6 +12,7 @@ class Page extends React.Component {
       <LookUpDevice {...this.props.lookingUpDevice} />
       <BlockDevice {...this.props} />
       <BlockShot {...this.props} />
+      <TopDomains {...this.props} />
     </div>;
   }
 }
@@ -398,6 +399,99 @@ class BlockShot extends React.Component {
     }
     let shotId = await resp.text();
     model.blockShotInformation = `Blocked shot ${shotId} from ${term}`;
+    render();
+  }
+}
+
+class TopDomains extends React.Component {
+  render() {
+    let defaultStartDate = new Date((new Date).getTime() - (1000*60*60*24*7)); // 7 days ago
+    defaultStartDate = defaultStartDate.toISOString().split("T")[0];
+    let defaultEndDate = (new Date()).toISOString().split("T")[0];
+    let result = null;
+    if (this.props.topDomains) {
+      let rows = this.props.topDomains.map(row => {
+        return <tr key={row.domain}>
+          <td><code>{row.domain}</code></td>
+          <td>{row.count}</td>
+        </tr>;
+      });
+      result = <table className="topDomains">
+        <tr>
+          <th>Domain</th>
+          <th>Count</th>
+        </tr>
+        { rows }
+      </table>;
+    }
+    return <fieldset>
+      <legend>top domains</legend>
+      <form onSubmit={this.onSubmit.bind(this)}>
+        <div>
+          <label for="includeBeta">
+            Include beta channel in search:
+            <input type="checkbox" id="includeBeta" ref={input => this.includeBeta = input} /></label>
+        </div>
+        <div>
+          <label for="startDate">
+            Start date:
+            <input type="text" defaultValue={ defaultStartDate } placeholder="YYYY-MM-DD" id="startDate" ref={input => this.startDate = input} />
+          </label>
+        </div>
+        <div>
+          <label for="endDate">
+            End date:
+            <input type="text" defaultValue={ defaultEndDate } placeholder="YYYY-MM-DD" id="endDate" ref={input => this.endDate = input} />
+          </label>
+        </div>
+        <div>
+          <label for="numberOfDomains">
+            Number of domains:
+            <input type="text" defaultValue="100" id="numberOfDomains" ref={input => this.numberOfDomains = input} />
+          </label>
+        </div>
+        <div>
+          <label for="requiredDomains">
+            Do not show a domain if it has less requests than this:
+            <input type="text" defaultValue="100" id="requiredDomains" ref={input => this.requiredDomains = input} />
+          </label>
+        </div>
+        <button type="submit">Query</button>
+      </form>
+      { this.props.topDomainsInformation }
+      { result }
+    </fieldset>;
+  }
+
+  async onSubmit() {
+    event.preventDefault();
+    let includeBeta = !!this.includeBeta.checked;
+    let startDate = this.startDate.value;
+    let endDate = this.endDate.value;
+    let numberOfDomains = parseInt(this.numberOfDomains.value, 10);
+    let requiredDomains = parseInt(this.requiredDomains.value, 10);
+    model.topDomainsInformation = "Querying server...";
+    render();
+    let resp = await fetch("/query-top-domains", {
+      body: JSON.stringify({includeBeta, startDate, endDate, numberOfDomains, requiredDomains}),
+      headers: {"content-type": "application/json"},
+      method: "POST",
+    });
+    if (!resp.ok) {
+      let body = await resp.text();
+      model.lastError = {
+        description: "Error looking up shot:",
+        status: resp.status,
+        statusText: resp.statusText,
+        body: body,
+      };
+      model.topDomainsInformation = "Errored";
+      render();
+      return;
+    }
+    let json = await resp.json();
+    model.topDomains = json.topDomains;
+    model.topDomainsInformation = null;
     render();
   }
 }
