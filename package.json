@@ -12,7 +12,7 @@
     "express": "4.16.3",
     "mozlog": "2.2.0",
     "pg": "7.4.3",
-    "react": "16.3.2",
+    "react": "16.8.6",
     "react-dom": "16.3.2"
   },
   "devDependencies": {
