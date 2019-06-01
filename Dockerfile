@@ -19,7 +19,7 @@ COPY server /app/server
 RUN npm run build
 
 # Release with Alpine
-FROM node:alpine@sha256:f6baac56fce1ad501f8f1ec41804dec9cf4f23b0a0ae4e81f700dbac93c10251 AS release
+FROM node:alpine@sha256:67ca3b1ba6a0d8c52030d0e5d775ace600197371c56becf7e6e9ff8191850f58 AS release
 WORKDIR /app
 COPY --from=dependencies /app/package.json ./
 RUN npm install --only=production
