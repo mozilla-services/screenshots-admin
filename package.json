@@ -9,7 +9,7 @@
   "dependencies": {
     "convict": "4.2.0",
     "envc": "2.5.0",
-    "express": "4.16.3",
+    "express": "4.17.1",
     "mozlog": "2.2.0",
     "pg": "7.4.3",
     "react": "16.3.2",
